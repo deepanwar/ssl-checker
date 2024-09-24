@@ -87,7 +87,7 @@ const SslCheckerForm = ({}) => {
           )}
         />
         <Button type="submit" className="w-full md:w-fit" disabled={isPending}>
-          {isPending ? "Checking..." : "Check"}
+          {isPending ? "Checking..." : "Check SSL"}
         </Button>
       </form>
     </Form>
