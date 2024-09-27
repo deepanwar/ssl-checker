@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/card";
 import { useSslChecker } from "@/contexts/ssl-checker.context";
 import { cn } from "@/lib/utils";
+import { calculateDaysFromNow } from "@/utils/dates";
 import dayjs from "dayjs";
 import {
   TbCertificate,
@@ -18,12 +19,6 @@ import {
 
 const RenderSection = ({ className }) => {
   const { sslData } = useSslChecker();
-
-  const calculateRemainDays = (date2) => {
-    const today = dayjs();
-    const secondDate = dayjs(date2);
-    return secondDate.diff(today, "day");
-  };
 
   if (!sslData) return null;
 
@@ -68,8 +63,8 @@ const RenderSection = ({ className }) => {
         <Card>
           <CardHeaderWithIcon type={sslData?.isRevoked ? "danger" : "success"}>
             {sslData?.isRevoked
-              ? "TLS Certificate has been revoked"
-              : "TLS Certificate has not been revoked"}
+              ? "Certificate has been revoked"
+              : "Certificate has not been revoked"}
           </CardHeaderWithIcon>
           <CardContent>
             <CardDescription>
@@ -85,8 +80,8 @@ const RenderSection = ({ className }) => {
             type={sslData?.isSelfSigned ? "danger" : "success"}
           >
             {sslData?.isSelfSigned
-              ? "TLS Certificate is self-signed"
-              : "TLS Certificate is not self-signed"}
+              ? "Certificate is self-signed"
+              : "Certificate is not self-signed"}
           </CardHeaderWithIcon>
         </Card>
 
@@ -96,20 +91,20 @@ const RenderSection = ({ className }) => {
             type={sslData?.isValidForDomain ? "success" : "danger"}
           >
             {sslData?.isValidForDomain
-              ? "TLS Certificate is valid for domain"
-              : "TLS Certificate is not valid for domain"}
+              ? "Certificate is valid for domain"
+              : "Certificate is not valid for domain"}
           </CardHeaderWithIcon>
         </Card>
 
         {/* Expiration */}
         <Card>
-          <CardHeaderWithIcon>TLS Certificate expiration</CardHeaderWithIcon>
+          <CardHeaderWithIcon>Certificate expiration</CardHeaderWithIcon>
           <CardContent>
             <CardDescription>
               {dayjs(sslData?.metadata?.validFrom).format("DD MMM YYYY")} -{" "}
               {dayjs(sslData?.metadata?.validTo).format("DD MMM YYYY")}
               <span className="ml-2">
-                ({calculateRemainDays(sslData?.metadata?.validTo)} days from
+                ({calculateDaysFromNow(sslData?.metadata?.validTo)} days from
                 today)
               </span>
             </CardDescription>
